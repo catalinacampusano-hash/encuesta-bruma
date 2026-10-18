@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Encuesta sobre publicidad de bebidas</title>
+<style>
+  body { margin: 0; padding: 48px 20px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; text-align: center; color: #1b1b1b; background: #ffffff; }
+  p { font-size: 18px; line-height: 1.5; }
+  a { color: #0b5cad; }
+</style>
+</head>
+<body>
+<p>Abriendo la encuesta...</p>
+<p>Si no se abre en unos segundos, <a id="enlace" href="#">toca aqu&iacute;</a>.</p>
+<script>
+  // PEGA AQUI LOS TRES ENLACES, ENTRE LAS COMILLAS:
+  var FORMULARIO_A = "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=dlZiAicyCkScaLttKd5CBgN0wdRHf6dJhibRVyBw77xUQjJGODcyNUhIQTJMMkI5OFRFSEdaUjhETS4u";
+  var FORMULARIO_B = "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=dlZiAicyCkScaLttKd5CBgN0wdRHf6dJhibRVyBw77xUMkJDRVk2WjROMDhJSUg1WDlHRjM1MTVWNC4u";
+  var REPARTIDOR   = "https://script.google.com/macros/s/AKfycbxpcg5B-np8vEDf7AYvWobn-jwOzEyzyTwMNNHEz_BJ9N8NuGwC2sExkTLgwwtNQOKOSQ/exec";
+
+  // No cambies nada desde aqui hacia abajo.
+  var decidido = false;
+  function ir(grupo) {
+    if (decidido) { return; }
+    decidido = true;
+    try { window.localStorage.setItem("bruma_grupo", grupo); } catch (e) {}
+    var destino = (grupo === "B") ? FORMULARIO_B : FORMULARIO_A;
+    document.getElementById("enlace").href = destino;
+    window.location.replace(destino);
+  }
+  function alAzar() { ir(Math.random() < 0.5 ? "A" : "B"); }
+
+  var guardado = null;
+  try { guardado = window.localStorage.getItem("bruma_grupo"); } catch (e) {}
+  if (guardado === "A" || guardado === "B") {
+    ir(guardado);
+  } else {
+    var respaldo = window.setTimeout(alAzar, 8000);
+    fetch(REPARTIDOR)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        window.clearTimeout(respaldo);
+        if (d && (d.grupo === "A" || d.grupo === "B")) { ir(d.grupo); } else { alAzar(); }
+      })
+      .catch(function () { window.clearTimeout(respaldo); alAzar(); });
+  }
+</script>
+</body>
+</html>

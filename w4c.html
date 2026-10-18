@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Anuncio</title>
+<style>
+  body { margin: 0; padding: 20px 16px 32px; min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 16px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #111111; color: #f2f2f2; }
+  p { margin: 0; max-width: 640px; text-align: center; font-size: 17px; line-height: 1.45; }
+  video { width: 100%; max-width: 720px; max-height: 72vh; background: #000000; border-radius: 8px; }
+  #listo { display: none; font-weight: 700; color: #ffd27a; }
+</style>
+</head>
+<body>
+<p>Mira el anuncio completo, con sonido.</p>
+<video src="w4c.mp4" controls playsinline preload="auto" controlsList="nodownload"></video>
+<p id="listo">Listo. Vuelve a la pesta&ntilde;a de la encuesta para responder.</p>
+<p>Cuando termine, vuelve a la pesta&ntilde;a de la encuesta.</p>
+<script>
+  document.querySelector("video").addEventListener("ended", function () {
+    document.getElementById("listo").style.display = "block";
+  });
+</script>
+</body>
+</html>
